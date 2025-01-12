@@ -2,6 +2,14 @@
 This project contains custom code for a WordPress website, including must-use plugins, custom plugins, and a child theme for GeneratePress.
 
 ## Directory Structure
+```bash
+/my-project
+├── mu-plugins/
+├── plugins/
+├── themes/
+│   └── generatepress_child/
+└── README.md
+```
 ```markdown
 `/mu-plugins/`
    Contains must-use plugins that are automatically loaded by WordPress.
