@@ -10,10 +10,12 @@ function generatepress_child_enqueue_styles() {
 add_action('wp_enqueue_scripts', 'generatepress_child_enqueue_styles');
 
 // Google Site Verification Meta Tag
-function google_site_verification() {
+function add_google_facebook_verification() {
     echo '<meta name="google-site-verification" content="av2rpSIYvX4gfgjThO7LgHUib4d-JfZTgwMo_3w_BME" />' . "\n";
+    echo '<meta name="facebook-domain-verification" content="y2er2fbvtu3to2s1h4l5gxex84rak5" />' . "\n";
 }
-add_action('wp_head', 'google_site_verification');
+add_action('wp_head', 'add_google_facebook_verification');
+
 
 function generatepress_child_enqueue_scripts() {
     wp_enqueue_script('child-theme-script', get_stylesheet_directory_uri() . '/js/custom.js', array('jquery'), null, true);

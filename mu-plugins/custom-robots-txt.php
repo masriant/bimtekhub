@@ -7,21 +7,55 @@
  * Author URI: https://bimtekhub.com
  */
 
-function custom_robots_txt() {
-    // Custom robots.txt content
-    echo "User-agent: *\n";
-    echo "Disallow: /wp-admin/\n";
-    echo "Allow: /wp-admin/admin-ajax.php\n";
-    echo "Disallow: /admin/\n";
-    echo "Disallow: /login/\n";
-    echo "Disallow: /register/\n";
-    echo "Disallow: /private/\n";
-    echo "Allow: /wp-content/uploads/\n";
-    echo "Allow: /public/\n";
+// Hook to 'robots_txt' filter to customize the robots.txt content
+add_filter('robots_txt', 'custom_robots_txt', 10, 2);
 
-    echo "\nSitemap: https://www.bimtekhub.com/sitemap.xml\n";
-    echo "Sitemap: https://www.bimtekhub.com/sitemap.rss\n";
-    echo "Sitemap: https://bimtekhub.com/sitemap_index.xml\n";
+function custom_robots_txt($output, $public) {
+    $output .= "Sitemap: https://www.bimtekhub.com/sitemap.xml\n";
+    $output .= "Sitemap: https://www.bimtekhub.com/sitemap.rss\n";
+    $output .= "Sitemap: https://bimtekhub.com/sitemap_index.xml\n\n";
+
+    $output .= "# Global settings for all user agents\n";
+    $output .= "User-agent: *\n";
+    $output .= "Disallow: /wp-admin/\n";
+    $output .= "Disallow: /admin/\n";
+    $output .= "Disallow: /login/\n";
+    $output .= "Disallow: /register/\n";
+    $output .= "Disallow: /private/\n";
+    $output .= "Allow: /wp-admin/admin-ajax.php\n";
+    $output .= "Allow: /wp-content/uploads/\n";
+    $output .= "Allow: /public/\n\n";
+
+    $output .= "# Specific settings for Googlebot\n";
+    $output .= "User-agent: Googlebot\n";
+    $output .= "Disallow: /private/\n";
+    $output .= "Disallow: /nogooglebot/\n";
+    $output .= "Allow: /\n\n";
+
+    $output .= "# Specific settings for Bingbot\n";
+    $output .= "User-agent: Bingbot\n";
+    $output .= "Disallow: /temp/\n";
+    $output .= "Disallow: /private/\n";
+    $output .= "Allow: /\n\n";
+
+    $output .= "# Block completely for BadBot\n";
+    $output .= "User-agent: BadBot\n";
+    $output .= "Disallow: /\n\n";
+
+    $output .= "# Delay for all crawlers to reduce server load\n";
+    $output .= "User-agent: *\n";
+    $output .= "Crawl-delay: 10\n\n";
+
+    $output .= "# Block specific file types\n";
+    $output .= "Disallow: /*.pdf$\n";
+    $output .= "Disallow: /*.doc$\n";
+    $output .= "Disallow: /*.docx$\n";
+    $output .= "Disallow: /*.xls$\n";
+    $output .= "Disallow: /*.xlsx$\n\n";
+
+    $output .= "# Block access to search results pages\n";
+    $output .= "Disallow: /search/\n";
+
+    return $output;
 }
-
-add_action('do_robotstxt', 'custom_robots_txt');
+?>
