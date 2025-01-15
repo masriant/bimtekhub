@@ -42,7 +42,7 @@ function add_open_graph_and_twitter_card_meta_tags() {
         if (has_post_thumbnail($post->ID)) {
             $image_url = get_the_post_thumbnail_url($post->ID, 'full');
         } else {
-            $image_url = 'URL_DEFAULT_IMAGE';
+            $image_url = 'https://bimtekhub.com/wp-content/uploads/2025/01/logo-1-png.webp';
         }
 
         // URL halaman atau postingan
