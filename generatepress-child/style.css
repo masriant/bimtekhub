@@ -1,0 +1,14 @@
+/*
+Theme Name:   GeneratePress Child
+Theme URI:    https://www.bimtekhub.com
+Description:  Child theme for GeneratePress.
+Author:       Masrianto
+Author URI:   https://www.masrianto.com
+Template:     generatepress
+Version:      1.0
+*/
+
+/* Import styles from the parent theme */
+@import url('../generatepress/style.css');
+
+/* Custom styles can be added here */
