@@ -32,12 +32,14 @@ function custom_robots_txt($output, $public) {
     $output .= "Disallow: /nogooglebot/\n";
     $output .= "Allow: /\n\n";
 
-    $output .= "# Specific settings for Bingbot\n";
-    $output .= "User-agent: Bingbot\n";
-    $output .= "Disallow: /temp/\n";
-    $output .= "Disallow: /private/\n";
-    $output .= "Allow: /\n\n";
+    // Add specific settings for Twitterbot
+    $output .= "# Specific settings for Twitterbot\n";
+    $output .= "User-agent: Twitterbot\n";
+    $output .= "Disallow: *\n";
+    $output .= "Allow: /images\n";
+    $output .= "Allow: /archives\n\n";
 
+    // Block completely for BadBot
     $output .= "# Block completely for BadBot\n";
     $output .= "User-agent: BadBot\n";
     $output .= "Disallow: /\n\n";
