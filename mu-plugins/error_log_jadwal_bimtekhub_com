@@ -1,0 +1,1 @@
+[16-Jan-2025 23:45:09 UTC] WordPress database error Table 'u293617086_tSMOO.wp_3_litespeed_avatar' doesn't exist for query SELECT COUNT(*) FROM `wp_3_litespeed_avatar` WHERE dateline<1736466309 made by do_action_ref_array('litespeed_task_avatar'), WP_Hook->do_action, WP_Hook->apply_filters, LiteSpeed\Avatar::cron, LiteSpeed\Avatar->queue_count

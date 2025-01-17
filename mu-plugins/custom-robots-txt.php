@@ -60,4 +60,3 @@ function custom_robots_txt($output, $public) {
 
     return $output;
 }
-?>

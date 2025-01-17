@@ -1,36 +1,41 @@
 <?php
 /**
  * Plugin Name: Custom Sitemap Generator
- * Description: Membuat sitemap.xml secara otomatis untuk situs WordPress.
+ * Description: Generates a sitemap.xml for the WordPress site.
  * Version: 1.0
  * Author: Masrianto
  * Author URI: https://bimtekhub.com
  */
 
-// Pastikan WordPress sudah siap sebelum menjalankan plugin
+// Ensure WordPress is ready before running the plugin
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Keluar jika dipanggil secara langsung
+    exit; // Exit if accessed directly
 }
 
-// Hook untuk menangani permintaan sitemap.xml
+// Hook to handle requests for sitemap.xml
 function generate_custom_sitemap() {
-    if (isset($_GET['sitemap'])) {
+    if (is_sitemap_request()) {
         header('Content-Type: application/xml; charset=utf-8');
         echo build_sitemap();
         exit;
     }
 }
 
-// Bangun konten sitemap XML
+// Check if the request is for sitemap.xml
+function is_sitemap_request() {
+    return (strpos($_SERVER['REQUEST_URI'], 'sitemap.xml') !== false);
+}
+
+// Build the XML sitemap content
 function build_sitemap() {
-    // Query untuk mendapatkan semua post dan halaman yang dipublikasikan
+    // Query to get all published posts and pages
     $posts = get_posts(array(
         'post_type' => array('post', 'page'),
         'post_status' => 'publish',
         'numberposts' => -1
     ));
 
-    // Mulai format XML untuk sitemap
+    // Start XML format for sitemap
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
     $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
@@ -51,14 +56,13 @@ function build_sitemap() {
     return $sitemap;
 }
 
-// Tambahkan rewrite rule untuk menangani sitemap.xml
+// Add rewrite rule to handle sitemap.xml
 function add_sitemap_rewrite_rule() {
     add_rewrite_rule('sitemap\.xml$', 'index.php?sitemap=1', 'top');
 }
 
-// Hook ke 'init' untuk menambahkan rewrite rule
+// Hook to 'init' to add the rewrite rule
 add_action('init', 'add_sitemap_rewrite_rule');
 
-// Hook untuk menghasilkan sitemap XML
+// Hook to generate the sitemap XML
 add_action('template_redirect', 'generate_custom_sitemap');
-?>

@@ -78,6 +78,39 @@ function add_category_sitemap_rewrite_rule() {
 }
 add_action('init', 'add_category_sitemap_rewrite_rule');
 
+function add_category_sitemap_query_var($vars) {
+    $vars[] = 'sitemap_category_id';
+    return $vars;
+}
+add_filter('query_vars', 'add_category_sitemap_query_var');
+
+
+function handle_category_sitemap_request() {
+    // Pastikan permintaan untuk sitemap-category
+    $category_id = get_query_var('sitemap_category_id');
+    if ($category_id) {
+        // Cek apakah kategori valid
+        $category = get_category($category_id);
+        if ($category) {
+            // Cek apakah file sitemap kategori ada
+            $sitemap_file = ABSPATH . 'sitemap-category-' . $category_id . '.xml';
+            if (file_exists($sitemap_file)) {
+                header('Content-Type: application/xml; charset=utf-8');
+                echo file_get_contents($sitemap_file);
+                exit;
+            } else {
+                // Jika file sitemap kategori tidak ada, tampilkan error
+                wp_die('Sitemap kategori tidak ditemukan!');
+            }
+        } else {
+            // Jika kategori tidak ditemukan
+            wp_die('Kategori tidak ditemukan!');
+        }
+    }
+}
+add_action('template_redirect', 'handle_category_sitemap_request');
+
+
 // Menangani permintaan untuk file sitemap kategori
 function handle_category_sitemap_request() {
     if (get_query_var('sitemap_category_id')) {
