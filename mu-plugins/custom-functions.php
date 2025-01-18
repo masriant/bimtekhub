@@ -96,4 +96,71 @@ function display_static_filtered_posts_table() {
 }
 add_shortcode('static_filtered_posts_table', 'display_static_filtered_posts_table');
 
-?>
+// Function to display posts by category with new label
+function display_posts_by_category_with_new_label($atts) {
+    // Ambil kategori dari atribut shortcode
+    $atts = shortcode_atts(
+        array(
+            'category' => 'keuangan', // Default: keuangan
+        ),
+        $atts,
+        'posts_by_category_with_new_label'
+    );
+
+    // Mengambil kategori berdasarkan slug
+    $category = get_category_by_slug($atts['category']);
+    if (!$category) {
+        return 'Kategori tidak ditemukan.';
+    }
+
+    // Menyiapkan query untuk mendapatkan semua post dalam kategori yang dipilih, diurutkan berdasarkan tanggal
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => -1, // Ambil semua post
+        'category_name' => $atts['category'], // Menyaring berdasarkan kategori
+        'orderby' => 'date', // Urutkan berdasarkan tanggal
+        'order' => 'DESC', // Urutkan dari yang terbaru
+    );
+
+    // Jalankan query untuk mengambil postingan
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        $output = '<ul>';
+
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_title = get_the_title();
+            $post_link = get_permalink();
+            $post_date = get_the_date('Y-m-d'); // Ambil tanggal publikasi
+            $post_time = strtotime($post_date);
+            $current_time = current_time('timestamp'); // Waktu saat ini
+            $new_label = ''; // Label "Baru" default
+
+            // Menentukan apakah postingan ini adalah postingan terbaru (misalnya dalam 7 hari terakhir)
+            if (($current_time - $post_time) <= 14 * DAY_IN_SECONDS) {
+                $new_label = '<span class="new-label" style="color: red; font-weight: bold;">New</span>';
+            }
+
+            // Menampilkan judul postingan dengan label "Baru" jika perlu
+            $output .= '<li>';
+            $output .= '<a href="' . $post_link . '">' . $post_title . '</a>';
+            if ($new_label) {
+                $output .= ' ' . $new_label; // Tampilkan label "Baru"
+            }
+            $output .= '</li>';
+        }
+
+        $output .= '</ul>'; // Ensure no stray quotation marks here
+    } else {
+        $output = 'Tidak ada postingan dalam kategori ini.';
+    }
+
+    wp_reset_postdata();
+
+    return $output;
+}
+
+// Daftarkan shortcode untuk menampilkan postingan dengan kategori tertentu, urutkan berdasarkan terbaru dan label "Baru"
+add_shortcode('posts_by_category_with_new_label', 'display_posts_by_category_with_new_label');
