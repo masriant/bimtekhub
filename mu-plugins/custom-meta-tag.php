@@ -7,7 +7,7 @@
  * Author URI: https://bimtekhub.com
  */
 
-// Add Open Graph, Twitter Card, Meta Description, and Meta Keywords
+// Add Open Graph, Twitter Card, Meta Description, Meta Keywords, and Canonical Tag
 function add_open_graph_and_twitter_card_meta_tags() {
     if (is_single() || is_page()) {
         global $post;
@@ -61,6 +61,9 @@ function add_open_graph_and_twitter_card_meta_tags() {
         if ($keywords) {
             echo '<meta name="keywords" content="' . esc_attr($keywords) . '">' . "\n";
         }
+
+        // Canonical Tag untuk SEO
+        echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
 
         // Mengecek apakah halaman adalah postingan (single) atau halaman statis (page)
         if (is_single() || is_page()) {
