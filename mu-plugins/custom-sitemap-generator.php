@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Custom Sitemap Generator
- * Description: Generates a sitemap.xml for the WordPress site.
+ * Description: Generates a sitemap.xml for the WordPress site, including categories.
  * Version: 1.0
  * Author: Masrianto
  * Author URI: https://bimtekhub.com
@@ -28,28 +28,41 @@ function is_sitemap_request() {
 
 // Build the XML sitemap content
 function build_sitemap() {
-    // Query to get all published posts and pages
-    $posts = get_posts(array(
-        'post_type' => array('post', 'page'),
-        'post_status' => 'publish',
-        'numberposts' => -1
-    ));
-
     // Start XML format for sitemap
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
     $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-    foreach ($posts as $post) {
-        setup_postdata($post);
-        $sitemap .= '<url>';
-        $sitemap .= '<loc>' . get_permalink($post) . '</loc>';
-        $sitemap .= '<lastmod>' . get_the_modified_date('Y-m-d', $post) . '</lastmod>';
-        $sitemap .= '<changefreq>weekly</changefreq>';
-        $sitemap .= '<priority>0.8</priority>';
-        $sitemap .= '</url>';
-    }
+    // Query to get all categories
+    $categories = get_categories();
 
-    wp_reset_postdata();
+    foreach ($categories as $category) {
+        // Add category URL to the sitemap
+        $sitemap .= '<url>';
+        $sitemap .= '<loc>' . get_category_link($category->term_id) . '</loc>';
+        $sitemap .= '<lastmod>' . date('Y-m-d') . '</lastmod>';
+        $sitemap .= '<changefreq>weekly</changefreq>';
+        $sitemap .= '<priority>0.5</priority>';
+        $sitemap .= '</url>';
+
+        // Query to get all posts in the category
+        $posts = get_posts(array(
+            'category' => $category->term_id,
+            'post_status' => 'publish',
+            'numberposts' => -1
+        ));
+
+        foreach ($posts as $post) {
+            setup_postdata($post);
+            $sitemap .= '<url>';
+            $sitemap .= '<loc>' . get_permalink($post) . '</loc>';
+            $sitemap .= '<lastmod>' . get_the_modified_date('Y-m-d', $post) . '</lastmod>';
+            $sitemap .= '<changefreq>weekly</changefreq>';
+            $sitemap .= '<priority>0.8</priority>';
+            $sitemap .= '</url>';
+        }
+
+        wp_reset_postdata();
+    }
 
     $sitemap .= '</urlset>';
 

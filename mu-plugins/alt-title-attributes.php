@@ -26,11 +26,3 @@ function add_image_alt_and_title($attr, $attachment) {
     return $attr;
 }
 add_filter('wp_get_attachment_image_attributes', 'add_image_alt_and_title', 10, 2);
-
-// Admin notice for plugin usage
-function alt_title_attributes_admin_notice() {
-    echo '<div class="notice notice-info is-dismissible">
-        <p><strong>Alt and Title Attributes Plugin Activated:</strong> This plugin adds alt and title attributes to images in WordPress.</p>
-    </div>';
-}
-add_action('admin_notices', 'alt_title_attributes_admin_notice');
