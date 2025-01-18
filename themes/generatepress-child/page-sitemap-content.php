@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Sitemap Page
+ * Template Name: Sitemap Page Content
  * Description: A custom sitemap page template for GeneratePress theme.
  */
 
@@ -30,6 +30,8 @@ get_header(); ?>
 						</header><!-- .entry-header -->
 
 						<div class="entry-content">
+							<p>Berikut adalah sitemap lengkap dari situs BimtekHub, yang mencakup daftar halaman, posting, dan kategori yang ada di situs kami.</p>
+
 							<h2>Pages</h2>
 							<ul>
 								<?php
