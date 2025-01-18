@@ -16,17 +16,26 @@ $posts = get_posts(array(
     'numberposts' => -1
 ));
 
-foreach ($posts as $post) {
-    setup_postdata($post);
+// Debugging output
+if (empty($posts)) {
     echo '<item>';
-    echo '<title>' . get_the_title($post) . '</title>';
-    echo '<link>' . get_permalink($post) . '</link>';
-    echo '<description>' . get_the_excerpt($post) . '</description>';
-    echo '<pubDate>' . get_the_date('D, d M Y H:i:s O', $post) . '</pubDate>';
+    echo '<title>No posts found</title>';
+    echo '<link>https://bimtekhub.com</link>';
+    echo '<description>No posts or pages are available.</description>';
+    echo '<pubDate>' . date('D, d M Y H:i:s O') . '</pubDate>';
     echo '</item>';
+} else {
+    foreach ($posts as $post) {
+        setup_postdata($post);
+        echo '<item>';
+        echo '<title>' . get_the_title($post) . '</title>';
+        echo '<link>' . get_permalink($post) . '</link>';
+        echo '<description>' . get_the_excerpt($post) . '</description>';
+        echo '<pubDate>' . get_the_date('D, d M Y H:i:s O', $post) . '</pubDate>';
+        echo '</item>';
+    }
+    wp_reset_postdata();
 }
-
-wp_reset_postdata();
 
 echo '</channel>';
 echo '</rss>';
