@@ -32,17 +32,28 @@ function custom_robots_txt($output, $public) {
     $output .= "Disallow: /nogooglebot/\n";
     $output .= "Allow: /\n\n";
 
-    // Add specific settings for Twitterbot
+    $output .= "# Specific settings for BingBot\n";
+    $output .= "User-agent: BingBot\n";
+    $output .= "Disallow: /cgi-bin/\n";
+    $output .= "Disallow: /scripts/\n";
+    $output .= "Disallow: /tmp/\n";
+    $output .= "Allow: /\n\n";
+
     $output .= "# Specific settings for Twitterbot\n";
     $output .= "User-agent: Twitterbot\n";
-    $output .= "Disallow: *\n";
     $output .= "Allow: /images\n";
-    $output .= "Allow: /archives\n\n";
+    $output .= "Allow: /archives\n";
+    $output .= "Disallow: *\n\n";
 
-    // Block completely for BadBot
     $output .= "# Block completely for BadBot\n";
     $output .= "User-agent: BadBot\n";
     $output .= "Disallow: /\n\n";
+
+    $output .= "# Allow AhrefsBot and AhrefsSiteAudit\n";
+    $output .= "User-agent: AhrefsBot\n";
+    $output .= "Allow: /\n\n";
+    $output .= "User-agent: AhrefsSiteAudit\n";
+    $output .= "Allow: /\n\n";
 
     $output .= "# Delay for all crawlers to reduce server load\n";
     $output .= "User-agent: *\n";

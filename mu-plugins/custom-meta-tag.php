@@ -7,6 +7,13 @@
  * Author URI: https://bimtekhub.com
  */
 
+  // Google Site Verification Meta Tag
+function add_google_facebook_verification() {
+    echo '<meta name="google-site-verification" content="av2rpSIYvX4gfgjThO7LgHUib4d-JfZTgwMo_3w_BME" />' . "\n";
+    echo '<meta name="facebook-domain-verification" content="y2er2fbvtu3to2s1h4l5gxex84rak5" />' . "\n";
+}
+add_action('wp_head', 'add_google_facebook_verification');
+
 // Add Open Graph, Twitter Card, Meta Description, Meta Keywords, and Canonical Tag
 function add_open_graph_and_twitter_card_meta_tags() {
     if (is_single() || is_page()) {
@@ -64,6 +71,16 @@ function add_open_graph_and_twitter_card_meta_tags() {
 
         // Canonical Tag untuk SEO
         echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
+
+        function add_canonical_tag() {
+            if (is_singular()) {
+                $canonical_url = get_permalink();
+                echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
+            }
+        }
+        
+        add_action('wp_head', 'add_canonical_tag');
+        
 
         // Mengecek apakah halaman adalah postingan (single) atau halaman statis (page)
         if (is_single() || is_page()) {
